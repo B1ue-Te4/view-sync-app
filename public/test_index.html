@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>Sync Player</title>
+</head>
+<body>
+  <h1>視聴同期</h1>
+  <video id="video" width="640" controls>
+    <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4" />
+    お使いのブラウザでは動画を再生できません。
+  </video>
+  <br />
+  <button id="playBtn">再生</button>
+  <button id="pauseBtn">一時停止</button>
+
+  <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+  <script>
+    const socket = io();
+    const video = document.getElementById('video');
+
+    document.getElementById('playBtn').onclick = () => {
+      video.play();
+      socket.emit('play');
+    };
+
+    document.getElementById('pauseBtn').onclick = () => {
+      video.pause();
+      socket.emit('pause');
+    };
+
+    socket.on('play', () => video.play());
+    socket.on('pause', () => video.pause());
+  </script>
+</body>
+</html>

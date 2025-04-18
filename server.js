@@ -1,42 +1,12 @@
-import http from 'http';
-import { Server } from 'socket.io';
-import fs from 'fs';  // ← 最初は非Promise版のままにしておきます
-import path from 'path';
+import { WebSocketServer } from 'ws';
 
-// HTTPサーバーを作成（index.htmlを返すだけ）
-const server = http.createServer((req, res) => {
-  const filePath = path.join(__dirname, 'public', 'index.html');
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading file');
-    }
-    res.writeHead(200, { 'Content-Type': 'text/html' });
-    res.end(data);
-  });
-});
+const wss = new WebSocketServer({ port: 3000 });
 
-
-// Socket.ioをHTTPサーバーに接続
-const io = new Server(server);
-
-io.on('connection', (socket) => {
+wss.on('connection', (ws) => {
   console.log('🟢 client connected');
 
-  socket.on('play', () => {
-    socket.broadcast.emit('play');
+  ws.on('message', (message) => {
+    console.log('📩 received:', message.toString());
+    ws.send(`Echo: ${message}`);
   });
-
-  socket.on('pause', () => {
-    socket.broadcast.emit('pause');
-  });
-
-  socket.on('disconnect', () => {
-    console.log('🔴 client disconnected');
-  });
-});
-
-// ポート3000でサーバーを起動
-server.listen(3000, () => {
-  console.log('✅ server running at http://localhost:3000');
 });
