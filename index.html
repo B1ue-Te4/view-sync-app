@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+  <head><meta charset="UTF-8"><title>三項演算子</title></head>
+  <body>
+    <input type="number" id="ageInput" placeholder="年齢を入力" />
+    <button id="checkBtn">判定</button>
+    <p id="output"></p>
+
+    <script>
+      document.getElementById("checkBtn").addEventListener("click", () => {
+        const age = Number(document.getElementById("ageInput").value);
+        const message = age < 20 ? "未成年" : "成人";
+        document.getElementById("output").textContent = message;
+      });
+    </script>
+  </body>
+</html>
