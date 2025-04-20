@@ -1,17 +1,56 @@
 <!DOCTYPE html>
 <html>
-  <head><meta charset="UTF-8"><title>三項演算子</title></head>
   <body>
-    <input type="number" id="ageInput" placeholder="年齢を入力" />
-    <button id="checkBtn">判定</button>
-    <p id="output"></p>
+    <form id="userForm">
+      <input type="text" id="name" placeholder="名前" />
+      <input type="number" id="age" placeholder="年齢" />
+      <button type="submit">追加</button>
+    </form>
+
+    <ul id="userList"></ul>
 
     <script>
-      document.getElementById("checkBtn").addEventListener("click", () => {
-        const age = Number(document.getElementById("ageInput").value);
-        const message = age < 20 ? "未成年" : "成人";
-        document.getElementById("output").textContent = message;
+      const form = document.getElementById("userForm");
+      const nameInput = document.getElementById("name");
+      const ageInput = document.getElementById("age");
+      const userList = document.getElementById("userList");
+
+      // データを保存するための配列
+      const users = [];
+
+      form.addEventListener("submit", (e) => {
+        e.preventDefault();
+
+        const name = nameInput.value.trim();
+        const age = ageInput.value;
+
+        if (!name || !age) {
+          alert("名前と年齢を入力してください");
+          return;
+        }
+
+        // データを配列に追加
+        users.push({ name, age });
+
+        // 入力欄をリセット
+        nameInput.value = "";
+        ageInput.value = "";
+
+        // リストの再描画
+        renderList();
       });
+
+      function renderList() {
+        // まず中身を空にする
+        userList.innerHTML = "";
+
+        // 配列の中身を元に li を作って追加
+        users.forEach((user) => {
+          const li = document.createElement("li");
+          li.textContent = `${user.name} さん（${user.age} 歳）`;
+          userList.appendChild(li);
+        });
+      }
     </script>
   </body>
 </html>
