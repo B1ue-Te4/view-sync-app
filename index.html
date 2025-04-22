@@ -1,24 +1,31 @@
 <!DOCTYPE html>
 <html>
   <body>
-    <form id="userForm">
+    <form id="userFormInput">
       <input type="text" id="name" placeholder="名前" />
       <input type="number" id="age" placeholder="年齢" />
       <button type="submit">追加</button>
     </form>
-
-    <ul id="userList"></ul>
-
+    
+    <section id="userFormView">
+      <button type="button" id="filterButton">20歳未満のみ</button>
+      <button type="button" id="showAllButton">全員表示</button> 
+      <ul id="userList"></ul>
+    </section>
     <script>
-      const form = document.getElementById("userForm");
+      const formInput = document.getElementById("userFormInput");
       const nameInput = document.getElementById("name");
       const ageInput = document.getElementById("age");
       const userList = document.getElementById("userList");
 
+      const formView = document.getElementById("userFormView");
+      const fltBtn = document.getElementById("filterButton");
+      const shwAlBtn = document.getElementById("showAllButton");
+
       // データを保存するための配列
       const users = [];
 
-      form.addEventListener("submit", (e) => {
+      formInput.addEventListener("submit", (e) => {
         e.preventDefault();
 
         const name = nameInput.value.trim();
@@ -37,15 +44,24 @@
         ageInput.value = "";
 
         // リストの再描画
-        renderList();
+        renderList(users);
       });
 
-      function renderList() {
+      fltBtn.addEventListener("click", () => {
+        const filtered = users.filter(user => user.age <20);
+        renderList(filtered)
+      });
+
+      shwAlBtn.addEventListener("click", () => {
+        renderList(users)
+      });
+
+      function renderList(userArray) {
         // まず中身を空にする
         userList.innerHTML = "";
 
         // 配列の中身を元に li を作って追加
-        users.forEach((user) => {
+        userArray.forEach((user) => {
           const li = document.createElement("li");
           li.textContent = `${user.name} さん（${user.age} 歳）`;
           userList.appendChild(li);
