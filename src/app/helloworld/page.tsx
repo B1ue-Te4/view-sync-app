@@ -1,12 +1,10 @@
-function HelloWorld() {
-    return <h1>Hello, World!</h1>
-}
+import HelloWorld from '@/components/HelloWorld'
 
 export default function Page() {
     return (
         <div>
-            <HelloWorld />
-            <HelloWorld />
+            <HelloWorld name="たろう" />
+            <HelloWorld name="hanako" />
         </div>
     )
 }
